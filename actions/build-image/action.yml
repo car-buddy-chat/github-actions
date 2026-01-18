@@ -1,0 +1,34 @@
+name: Build Docker Image
+description: Build and push Docker image to container registry
+
+inputs:
+  registry:
+    description: Container registry URL
+    required: true
+  repository:
+    description: Repository name
+    required: true
+  image-tag:
+    description: Image tag (default: github.sha)
+    required: false
+    default: ${{ github.sha }}
+  dockerfile:
+    description: Path to Dockerfile (default: Dockerfile)
+    required: false
+    default: Dockerfile
+
+outputs:
+  image-uri:
+    description: Full image URI
+    value: ${{ steps.build.outputs.image-uri }}
+
+runs:
+  using: docker
+  image: docker://docker:latest
+  entrypoint: bash
+  args:
+    - -c
+    - |
+      docker build -t ${{ inputs.registry }}/${{ inputs.repository }}:${{ inputs.image-tag }} -f ${{ inputs.dockerfile }} .
+      docker push ${{ inputs.registry }}/${{ inputs.repository }}:${{ inputs.image-tag }}
+      echo "image-uri=${{ inputs.registry }}/${{ inputs.repository }}:${{ inputs.image-tag }}" >> $GITHUB_OUTPUT
