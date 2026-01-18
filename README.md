@@ -89,6 +89,8 @@ jobs:
 
 ## Running Self-Hosted Runners on k3s
 
+⚠️ **Setup required** - See [runner/k3s/SETUP.md](runner/k3s/SETUP.md) for complete instructions
+
 See [runner/k3s/README.md](runner/k3s/README.md) for:
 - Setting up GitHub Actions runner controller on k3s
 - Docker-in-Docker service configuration
